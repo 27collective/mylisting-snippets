@@ -1,3 +1,5 @@
+<?php
+
 add_action( 'init', function() {
     if ( empty( $_GET['geolocate_listings'] ) || ! current_user_can( 'administrator' ) ) {
         return;
