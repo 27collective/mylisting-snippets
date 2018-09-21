@@ -32,11 +32,17 @@ add_action( 'init', function() {
 
         foreach ( $listings as $listing ) {
             if ( ! ( $location = get_post_meta( $listing->ID, '_job_location', true ) ) ) {
+                printf( '<p style="color: #8e8e8e;">Skipping geolocation for listing #%d (missing address)</p>', $listing->ID );
                 continue;
             }
-            printf( '<p>Geocoding location: "%s" for listing: "%d"</p>', $location, $listing->ID );
 
-            mylisting()->geocoder()->save_location( $listing->ID, $location );
+            $geocoded = mylisting()->geocoder()->save_location( $listing->ID, $location );
+            if ( $geocoded !== false ) {
+                printf( '<p style="color: green;">Geolocation successful for listing #%d (%s)</p>', $listing->ID, $location );
+                continue;
+            }
+
+            printf( '<p style="color: red;">Failed to geolocate listing #%d (%s)</p>', $listing->ID, $location );
         }
 
         $offset = ( ! $offset ) ? $next_data : $offset + $next_data;
