@@ -1,4 +1,5 @@
-add_action( 'job_manager_check_for_expired_jobs', function() {
+<?php
+add_action( 'mylisting/schedule:hourly', function() {
     global $wpdb;
 
     // Change status to expired.
